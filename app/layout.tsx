@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "ImaginX",
   description: "Get your video compressed, Get different scales of images",
   icons: {
-    icon: "/logo_fav.ico", // Ensure this is in /public
+    icon: "/logo_fav.ico",
   },
 };
 

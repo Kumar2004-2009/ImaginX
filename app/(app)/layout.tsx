@@ -31,11 +31,12 @@ export default function AppLayout({
   const { user } = useUser();
 
   const handleLogoClick = () => {
-    router.push("/");
+    router.push("/home");
   };
 
   const handleSignOut = async () => {
     await signOut();
+    router.push("/home");
   };
 
   return (
