@@ -14,7 +14,8 @@ cloudinary.config({
 
 export async function DELETE(request: Request) {
   try {
-    const { id } = await request.json(); // Parse the request body to get the video ID
+    const body = await request.text(); // Read raw text
+    const { id } = JSON.parse(body); // Parse JSON manually
 
     if (!id) {
       return NextResponse.json(
@@ -25,12 +26,13 @@ export async function DELETE(request: Request) {
 
     // First, find the video to get the Cloudinary public ID
     const video = await prisma.video.findUnique({
-      where: { id: id },
+      where: { id },
+      select: { publicId: true }, // Select only publicId field
     });
 
-    if (!video) {
+    if (!video || !video.publicId) {
       return NextResponse.json(
-        { message: "Video not found" },
+        { message: "Video not found or missing publicId" },
         { status: 404 }
       );
     }
@@ -42,7 +44,7 @@ export async function DELETE(request: Request) {
 
     // Delete from Prisma
     await prisma.video.delete({
-      where: { id: id },
+      where: { id },
     });
 
     return NextResponse.json(
