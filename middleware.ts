@@ -19,6 +19,10 @@ export default clerkMiddleware(async (auth,req)=>{
     const isHomePage =currentUrl.pathname === "/home"
     const isApiRequest = currentUrl.pathname.startsWith("/api")
 
+    if (!userId && currentUrl.href === "https://reelify-ivory.vercel.app/") {
+        return NextResponse.redirect(new URL("/sign-in", req.url));
+    }
+
     if(userId && isPublicRoute(req) && !isHomePage){
         return NextResponse.redirect(new URL("/home",req.url))
     }
